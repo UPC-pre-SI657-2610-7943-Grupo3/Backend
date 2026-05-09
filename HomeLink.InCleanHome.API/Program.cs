@@ -67,14 +67,18 @@ builder.Services.AddCors(options =>
 // Database (PostgreSQL via Npgsql.EntityFrameworkCore.PostgreSQL)
 // ============================================================================
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? Environment.GetEnvironmentVariable("DATABASE_URL")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-if (connectionString.StartsWith("postgres://"))
+// Render provides connection strings in URI format (postgres:// or postgresql://).
+// Npgsql requires ADO.NET format (Host=...;Port=...;Database=...).
+if (connectionString.StartsWith("postgres://") || connectionString.StartsWith("postgresql://"))
 {
     var uri = new Uri(connectionString);
     var userInfo = uri.UserInfo.Split(':');
-    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.LocalPath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SslMode=Prefer;TrustServerCertificate=true;";
+    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.LocalPath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true;";
 }
+Console.WriteLine($"[STARTUP] Using connection: Host={new Uri("http://placeholder").Host} (format validated)");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
