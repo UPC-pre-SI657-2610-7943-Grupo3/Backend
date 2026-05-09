@@ -1,7 +1,5 @@
 databases:
   - name: incleanhome-db
-    databaseName: incleanhome
-    user: postgres
     plan: free
 
 services:
