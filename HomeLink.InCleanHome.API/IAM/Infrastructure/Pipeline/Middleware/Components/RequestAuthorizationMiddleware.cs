@@ -55,6 +55,8 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
         // 5. Aplicación del patrón CQRS: Se construye y despacha un Query para obtener los datos del usuario
         var getUserByIdQuery = new GetUserByIdQuery(userId.Value);
         var user = await userQueryService.Handle(getUserByIdQuery);
+        // 6. Se inyecta la entidad del usuario en el contexto actual para que los controladores 
+        // puedan acceder a ella sin tener que volver a consultar la base de datos
         context.Items["User"] = user;
 
         await next(context);
