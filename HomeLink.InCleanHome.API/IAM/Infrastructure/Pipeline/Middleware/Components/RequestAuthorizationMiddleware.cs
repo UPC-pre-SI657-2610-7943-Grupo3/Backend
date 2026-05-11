@@ -43,7 +43,7 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
             await context.Response.WriteAsync("{\"message\":\"Authorization token is required.\"}");
             return;
         }
-
+        // 4. Se delega la validación de la firma y expiración del token al servicio de dominio
         var userId = await tokenService.ValidateToken(token);
         if (userId == null)
         {
