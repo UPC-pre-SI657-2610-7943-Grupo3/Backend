@@ -58,7 +58,7 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
         // 6. Se inyecta la entidad del usuario en el contexto actual para que los controladores 
         // puedan acceder a ella sin tener que volver a consultar la base de datos
         context.Items["User"] = user;
-
+        // 7. Se aprueba la solicitud y se transfiere el control al siguiente componente del pipeline
         await next(context);
     }
 }
