@@ -34,7 +34,7 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
             await next(context);
             return;
         }
-
+        // 3. Extracción del token JWT de la cabecera 'Authorization' (removiendo el esquema 'Bearer ')
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         if (string.IsNullOrWhiteSpace(token))
         {
