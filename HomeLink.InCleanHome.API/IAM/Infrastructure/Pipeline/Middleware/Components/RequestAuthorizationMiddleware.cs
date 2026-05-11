@@ -16,6 +16,7 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
         IUserQueryService userQueryService,
         ITokenService tokenService)
     {
+        // 1. Se intercepta la petición HTTP y se obtiene la metadata del endpoint destino
         var endpoint = context.Request.HttpContext.GetEndpoint();
 
         // If there is no endpoint (e.g. Swagger UI, static files), skip authorization
