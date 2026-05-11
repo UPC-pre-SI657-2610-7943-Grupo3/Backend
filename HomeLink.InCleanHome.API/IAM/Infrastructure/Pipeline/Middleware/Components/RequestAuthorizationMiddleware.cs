@@ -52,7 +52,7 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
             await context.Response.WriteAsync("{\"message\":\"Invalid or expired token.\"}");
             return;
         }
-
+        // 5. Aplicación del patrón CQRS: Se construye y despacha un Query para obtener los datos del usuario
         var getUserByIdQuery = new GetUserByIdQuery(userId.Value);
         var user = await userQueryService.Handle(getUserByIdQuery);
         context.Items["User"] = user;
