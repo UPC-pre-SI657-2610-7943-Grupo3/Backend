@@ -25,7 +25,7 @@ public class RequestAuthorizationMiddleware(RequestDelegate next)
             await next(context);
             return;
         }
-
+        // 2. Se verifica si el endpoint destino está decorado con el atributo [AllowAnonymous]
         var allowAnonymous = endpoint.Metadata
             .Any(m => m.GetType() == typeof(AllowAnonymousAttribute));
 
